@@ -9,7 +9,7 @@ module.exports = {
   },
   entry: {
     js: './src/js/index.js',
-    wasm: './src/wasm/index.js',
+    wasm: './src/wasm/index.js'
   },
   output: {
     filename: '[name]/[name].js',
