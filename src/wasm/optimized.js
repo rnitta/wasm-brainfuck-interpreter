@@ -102,7 +102,71 @@ heap.fill(undefined);
 
 heap.push(undefined, null, true, false);
 
+function getObject(idx) { return heap[idx]; }
+
 let heap_next = heap.length;
+
+function addHeapObject(obj) {
+    if (heap_next === heap.length) heap.push(heap.length + 1);
+    const idx = heap_next;
+    heap_next = heap[idx];
+
+    heap[idx] = obj;
+    return idx;
+}
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
+}
+
+export function __widl_f_get_element_by_id_Document(arg0, arg1, arg2) {
+    let varg1 = getStringFromWasm(arg1, arg2);
+
+    const val = getObject(arg0).getElementById(varg1);
+    return isLikeNone(val) ? 0 : addHeapObject(val);
+
+}
+
+export function __widl_f_set_inner_html_Element(arg0, arg1, arg2) {
+    let varg1 = getStringFromWasm(arg1, arg2);
+    getObject(arg0).innerHTML = varg1;
+}
+
+export function __widl_instanceof_Window(idx) { return getObject(idx) instanceof Window ? 1 : 0; }
+
+export function __widl_f_document_Window(arg0) {
+
+    const val = getObject(arg0).document;
+    return isLikeNone(val) ? 0 : addHeapObject(val);
+
+}
+
+export function __wbg_newnoargs_b4526aa2a6db81de(arg0, arg1) {
+    let varg0 = getStringFromWasm(arg0, arg1);
+    return addHeapObject(new Function(varg0));
+}
+
+function handleError(exnptr, e) {
+    const view = getUint32Memory();
+    view[exnptr / 4] = 1;
+    view[exnptr / 4 + 1] = addHeapObject(e);
+}
+
+export function __wbg_call_a7a8823c404228ab(arg0, arg1, exnptr) {
+    try {
+        return addHeapObject(getObject(arg0).call(getObject(arg1)));
+    } catch (e) {
+        handleError(exnptr, e);
+    }
+}
+
+export function __wbindgen_throw(ptr, len) {
+    throw new Error(getStringFromWasm(ptr, len));
+}
+
+export function __wbindgen_object_clone_ref(idx) {
+    return addHeapObject(getObject(idx));
+}
 
 function dropObject(idx) {
     if (idx < 36) return;
