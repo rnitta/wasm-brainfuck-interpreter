@@ -1,22 +1,22 @@
-# WIP: brainfuck interpreter in js and wasm
+# brainfuck interpreter in js and wasm もどき
 for learning something
+
 
 # requirement
 - es6 compatible browser
 - rust 1.30.0 +
 - wasm32-unknown-unknown
 - wasm-bindgen-cli
-- optional: wasm-gc
+- optional: wasm-gc <- for .wasm optimization
 
 - direnv
 - yarn
 
 # build
 
-
-
-
 # memo
+
+see package.json
 
 ## add wasm32-unknown-unknown to rustc target
 

@@ -1,19 +1,24 @@
 extern crate web_sys;
 extern crate wasm_bindgen;
 
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::{prelude::*, JsCast};
+use web_sys::*;
+
+mod interpreter;
 
 #[wasm_bindgen]
-pub fn add1(n: i32) -> i32 {
-    n + 1
-}
-
-#[wasm_bindgen]
-pub fn retstr(name: String) -> String {
+pub fn execute() {
     let window = web_sys::window().unwrap();
     let document = window.document().unwrap();
-    let element = document.get_element_by_id("wasmoutput").unwrap();
-    element.set_inner_html("hoge");
+    let code: String = {
+        let elm: Element = document.get_element_by_id("wasmcode").unwrap();
+        let elm: HtmlTextAreaElement = JsCast::unchecked_from_js(elm.dyn_into().unwrap());
+        elm.value()
+    };
 
-    name
+    let output_elm: HtmlTextAreaElement = {
+        let elm: Element = document.get_element_by_id("wasmoutput").unwrap();
+        JsCast::unchecked_from_js(elm.dyn_into().unwrap())
+    };
+    output_elm.set_value(&interpreter::execute(code));
 }
