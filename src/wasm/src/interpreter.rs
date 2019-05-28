@@ -37,10 +37,6 @@ impl Tree {
     pub fn new_leaf(token: Token) -> Self {
         Self { left: None, right: None, token: Some(token) }
     }
-
-    pub fn new_branch(left: Box<Self>, right: Box<Self>) -> Self {
-        Self { left: Some(left), right: Some(right), token: None }
-    }
 }
 
 // codeの各文字をenum Tokenのトークン列vectorにする
@@ -57,7 +53,6 @@ fn lexer(code: String) -> Vec<Token> {
 }
 
 // トークン列から構文木っぽいものを作り出す
-// 基本左にleafをぶちこんでいき、"["がきたら左も"]"までのブランチになる 終端の右はNone
 fn parser(v: &[Token]) -> (Tree, &[Token]) {
     if v.get(0).is_some() {
         let (left, remain) = if v[0] == Token::Loopb {
@@ -77,15 +72,6 @@ fn parser(v: &[Token]) -> (Tree, &[Token]) {
         (Tree { left: None, right: None, token: None }, &[])
     }
 }
-
-//'>' => Some(Token::Ptrinc),
-//'<' => Some(Token::Ptrdec),
-//'+' => Some(Token::Valinc),
-//'-' => Some(Token::Valdec),
-//'.' => Some(Token::Output),
-//',' => Some(Token::Input),
-//'[' => Some(Token::Loopb),
-//']' => Some(Token::Loope),
 
 fn interpret(buf: &mut Vec<u8>, ptr: &mut usize, out: &mut String, tree: &Tree) {
     if let Some(left) = &tree.left {
