@@ -1,6 +1,6 @@
 # brainfuck interpreter in js and wasm もどき
-for learning something
-
+for learning something  
+demo: [https://wasm-brainfuck.netlify.com/](https://wasm-brainfuck.netlify.com/)
 
 # requirement
 - es6 compatible browser
